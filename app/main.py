@@ -30,14 +30,15 @@ async def predict(file: UploadFile = File(...)):
         with open(temp_name, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         
-        pred_class, class_idx, confidence = predict_image(temp_name)
+        pred_class, class_idx, confidence, all_probs = predict_image(temp_name)
         cam_path = generate_gradcam(temp_name, class_idx)
 
         return {
             "prediction": pred_class,
             "confidence": confidence,
             "explaination": DISORDER_INFO[pred_class],
-            "gradcam_image": f"/{cam_path}"
+            "gradcam_image": f"/{cam_path}",
+            "all_probs": all_probs
         }
     
     finally:

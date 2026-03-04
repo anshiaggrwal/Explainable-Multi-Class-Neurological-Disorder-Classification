@@ -22,7 +22,7 @@ if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
     st.image(image, caption = "Uploaded Brain MRI", width = 250)
     
-    with st.spinner("Analysing youe MRI..."):
+    with st.spinner("Analyzing your MRI..."):
         files = {
             "file": (
                 uploaded_file.name,
@@ -40,13 +40,38 @@ if uploaded_file is not None:
             st.write(f"**Your predicted case is** {data['prediction']}")
             st.write(f"**Confidence:** {data['confidence']}%")
 
+            # Warnings 
+            if data["prediction"] == "Normal":
+                dementia_confidence = (
+                    data["all_probs"].get("AD_VeryMildDemented", 0) +
+                    data["all_probs"].get("AD_MildDemented", 0) +
+                    data["all_probs"].get("AD_ModerateDemented", 0)
+                )
+                if dementia_confidence > 20:
+                    st.warning(
+                        "⚠️ Although predicted case is Normal, there is a noticeable probability of dementia-related changes. "
+                        f"The combined probability of Mild or Moderate Dementia is {dementia_confidence}%."
+                        " Further medical evaluation is recommended."
+                    )
+                else:
+                    st.warning(
+                        "⚠️ While the model predicts a normal case, it's important to remember that no AI model is perfect. "
+                        "There still might be a chance of Mild or Moderate Dementia. "
+                        "If you have any symptoms or concerns, please consult a healthcare professional for a comprehensive evaluation."
+                    )
+            elif data["confidence"] < 70:
+                st.warning(
+                    "⚠️ The model's confidence in this prediction is relatively low. "
+                    "Consider consulting a healthcare professional for a more comprehensive evaluation."
+                )
+                
             # Explaination 
             st.subheader("📝 What This Result Means")
             st.write(data["explaination"])
 
             # Visualization
             st.subheader("🔍 Where the Model Focused")
-            gradcam_url = f"http://localhost:8000{data["gradcam_image"]}"
+            gradcam_url = f"http://localhost:8000{data['gradcam_image']}"
             st.image(gradcam_url, caption = "Highlighted MRI Areas", width = 250)
         else:
             st.error("Error connecting to backend API. Please try again.")

@@ -13,4 +13,8 @@ def predict_image(image_path):
 
     predicted_class = IDX_TO_CLASS[pred_idx.item()]
     confidence = round(conf.item() * 100, 2)
-    return predicted_class, pred_idx.item(), confidence 
+
+    all_probs = {
+        IDX_TO_CLASS[i]: round(probs[0][i].item()*100, 2) for i in range(len(IDX_TO_CLASS)) 
+    }
+    return predicted_class, pred_idx.item(), confidence, all_probs
