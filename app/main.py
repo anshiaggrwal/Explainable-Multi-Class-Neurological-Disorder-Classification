@@ -1,14 +1,12 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.staticfiles import StaticFiles
-from app.predict import predict_image
-from app.gradcam import generate_gradcam
+
+app = FastAPI(title = "Neurological Disorder Classification API")
+
 import uuid
 import os
 import shutil # to copy the uploaded file to the desired location
 from app.disorder_info import DISORDER_INFO
-
-
-app = FastAPI(title = "Neurological Disorder Classification API")
 
 app.mount("/static", StaticFiles(directory = "static"), name = "static")
 
@@ -16,6 +14,8 @@ ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png"}
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
+    from app.predict import predict_image
+    from app.gradcam import generate_gradcam
     # Validate file extension
     ext = os.path.splitext(file.filename)[-1].lower()
     if ext not in ALLOWED_EXTENSIONS:
