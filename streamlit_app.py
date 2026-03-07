@@ -3,7 +3,7 @@ import requests #to send image to backend
 from PIL import Image
 import io # to handle image data
 
-API_URL = "https://explainable-multi-class-neurological.onrender.com/"
+API_URL = "https://explainable-multi-class-neurological.onrender.com/predict"
 
 st.set_page_config(
     page_title = " Neurological Disorder Classification ",
