@@ -10,8 +10,9 @@ from pytorch_grad_cam.utils.image import show_cam_on_image
 from app.model_loader import model, DEVICE, transform
 
 TARGET_LAYER = model.features[-1] # The last feature of the model is typically the most relevant for Grad-CAM.
-
+cam = None
 def generate_gradcam(image_path, class_idx):
+    global cam
     image = Image.open(image_path).convert("RGB")
     image_resized = image.resize((224, 224))
     image_np = np.array(image_resized) / 255.0 #for visualization, we need the image in [0, 1] range.
