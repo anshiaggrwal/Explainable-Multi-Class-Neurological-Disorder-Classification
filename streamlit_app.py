@@ -80,7 +80,7 @@ if uploaded_file is not None:
             )
             city = st.text_input("Enter you city name to find neurologists near you: ")
 
-            if city:
+            if city.strip() != "":
                 search_url = f"https://www.google.com/maps/search/top+rated+neurologists+near+{city.replace(' ', '+')}"
                 st.markdown(f"🔎[Find top rated neurologists near {city}](%s)" % search_url)
         else:
