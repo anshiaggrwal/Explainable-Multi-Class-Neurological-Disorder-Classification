@@ -10,6 +10,10 @@ app = FastAPI(title = "Neurological Disorder Classification API")
 
 app.mount("/static", StaticFiles(directory = "static"), name = "static")
 
+@app.get("/")
+def home():
+    return {"message": "Brain MRI API is running successfully"}
+
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png"}
 
 @app.post("/predict")
