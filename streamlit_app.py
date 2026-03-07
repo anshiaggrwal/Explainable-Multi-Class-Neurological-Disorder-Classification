@@ -73,6 +73,16 @@ if uploaded_file is not None:
             st.subheader("🔍 Where the Model Focused")
             gradcam_url = f"http://localhost:8000{data['gradcam_image']}"
             st.image(gradcam_url, caption = "Highlighted MRI Areas", width = 250)
+
+            st.subheader("🩺 Need a Specialist?")
+            st.write(
+                "If you have any concerns about your results or symptoms, search for highly rated neurologists near your city."
+            )
+            city = st.text_input("Enter you city name to find neurologists near you: ")
+
+            if city:
+                search_url = f"https://www.google.com/maps/search/top+rated+neurologists+near+{city.replace(' ', '+')}"
+                st.markdown(f"🔎[Find top rated neurologists near {city}](%s)" % search_url)
         else:
             st.error("Error connecting to backend API. Please try again.")
 
