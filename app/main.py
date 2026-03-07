@@ -2,6 +2,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.staticfiles import StaticFiles
 import uuid
 import os
+os.environ["MPLCONFIGDIR"] = "/tmp"
 import shutil # to copy the uploaded file to the desired location
 from app.disorder_info import DISORDER_INFO
 
