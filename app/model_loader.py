@@ -1,6 +1,7 @@
 import torch
 import timm
 from torchvision import transforms
+import os
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -17,6 +18,8 @@ IDX_TO_CLASS = {
 }
 
 NUM_CLASSES = len(IDX_TO_CLASS)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "..", "saved_model", "rexnet_model_best_acc.pth")
 
 def load_model():
     model = timm.create_model(
@@ -25,10 +28,9 @@ def load_model():
         num_classes = NUM_CLASSES
     )
 
-    model.load_state_dict(torch.load(
-        "saved_model/rexnet_model_best_acc.pth", 
-        map_location=DEVICE
-    ))
+    model.load_state_dict(
+        torch.load(MODEL_PATH, map_location=DEVICE)
+    )
     model.to(DEVICE) 
 
     model.eval()
