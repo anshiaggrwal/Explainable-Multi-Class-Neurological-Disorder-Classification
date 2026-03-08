@@ -1,13 +1,18 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.staticfiles import StaticFiles
-import uuid
 import os
 os.environ["MPLCONFIGDIR"] = "/tmp"
+import uuid
+os.environ["MPLCONFIGDIR"] = "/tmp"
 import shutil # to copy the uploaded file to the desired location
+
 from app.disorder_info import DISORDER_INFO
+from app.predict import predict_image
+from app.gradcam import generate_gradcam
 
 app = FastAPI(title = "Neurological Disorder Classification API")
 
+os.makedirs("static/gradcam", exist_ok=True)
 app.mount("/static", StaticFiles(directory = "static"), name = "static")
 
 @app.get("/")
@@ -27,11 +32,8 @@ async def predict(file: UploadFile = File(...)):
             detail = "Invalid file type. Only .jpg, .jpeg, and .png files are allowed."
         )
     
-    from app.predict import predict_image
-    from app.gradcam import generate_gradcam
-    
     # Save the uploaded file to a temporary location
-    temp_name = f"temp_{uuid.uuid4()}{ext}"
+    temp_name = f"/tmp/temp_{uuid.uuid4()}{ext}"
 
     try:
         with open(temp_name, "wb") as buffer:
@@ -43,7 +45,7 @@ async def predict(file: UploadFile = File(...)):
         return {
             "prediction": pred_class,
             "confidence": confidence,
-            "explaination": DISORDER_INFO[pred_class],
+            "explanation": DISORDER_INFO[pred_class],
             "gradcam_image": f"/{cam_path}",
             "all_probs": all_probs
         }

@@ -3,7 +3,7 @@ import requests #to send image to backend
 from PIL import Image
 import io # to handle image data
 
-API_URL = "https://explainable-multi-class-neurological.onrender.com/predict"
+API_URL = "https://anshiagarwal-brain-mri-api.hf.space/predict"
 
 st.set_page_config(
     page_title = " Neurological Disorder Classification ",
@@ -67,7 +67,7 @@ if uploaded_file is not None:
                 
             # Explaination 
             st.subheader("📝 What This Result Means")
-            st.write(data["explaination"])
+            st.write(data["explanation"])
 
             # Visualization
             st.subheader("🔍 Where the Model Focused")

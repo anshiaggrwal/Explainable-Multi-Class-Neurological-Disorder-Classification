@@ -34,6 +34,11 @@ def load_model():
     model.to(DEVICE) 
 
     model.eval()
+
+    # Disable gradients to save RAM (we don't need training)
+    for param in model.parameters():
+        param.requires_grad = False
+        
     return model
 
 model = load_model()

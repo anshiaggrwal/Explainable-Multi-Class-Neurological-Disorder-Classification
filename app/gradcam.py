@@ -27,16 +27,19 @@ def generate_gradcam(image_path, class_idx):
     image = Image.open(image_path).convert("RGB")
     image_resized = image.resize((224, 224))
     image_np = np.array(image_resized) / 255.0
-
+    
     # Prepare tensor
     input_tensor = transform(image).unsqueeze(0).to(DEVICE)
+
+    # GradCAM needs gradients — temporarily re-enable them
+    for param in model.parameters():
+        param.requires_grad = True
 
     # Initialize GradCAM once
     if cam is None:
         cam = GradCAM(
             model=model,
-            target_layers=[TARGET_LAYER],
-            use_cuda=(DEVICE == "cuda")
+            target_layers=[TARGET_LAYER]
         )
 
     # Focus on predicted class
@@ -47,6 +50,9 @@ def generate_gradcam(image_path, class_idx):
         input_tensor=input_tensor,
         targets=targets
     )[0]
+
+    for param in model.parameters():
+        param.requires_grad = False
 
     # Overlay heatmap
     visualization = show_cam_on_image(
