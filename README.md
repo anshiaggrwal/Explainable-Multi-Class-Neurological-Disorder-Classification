@@ -9,6 +9,15 @@ backend**, and **Streamlit frontend** to provide an end-to-end system
 for MRI image analysis.
 
 ------------------------------------------------------------------------
+## Check Live
+
+🌐 **Live Demo:** [neurological-disorder-identification.streamlit.app](https://neurological-disorder-identification.streamlit.app/)
+
+🔗 **Backend API:** [anshiagarwal-brain-mri-api.hf.space](https://anshiagarwal-brain-mri-api.hf.space/docs)
+
+
+
+------------------------------------------------------------------------
 
 ## 🚀 Features
 
