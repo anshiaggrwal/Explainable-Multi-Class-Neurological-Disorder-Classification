@@ -136,7 +136,7 @@ clinical decisions.
 
 Backend deployed using:
 
--   **Render (FastAPI API hosting)**
+-   **Hugging Face Spaces**
 
 Frontend deployed using:
 
