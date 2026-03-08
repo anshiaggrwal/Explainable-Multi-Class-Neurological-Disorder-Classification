@@ -71,7 +71,7 @@ if uploaded_file is not None:
 
             # Visualization
             st.subheader("🔍 Where the Model Focused")
-            gradcam_url = f"http://localhost:8000{data['gradcam_image']}"
+            gradcam_url = "https://anshiagarwal-brain-mri-api.hf.space" + response["gradcam_image"]
             st.image(gradcam_url, caption = "Highlighted MRI Areas", width = 250)
 
             st.subheader("🩺 Need a Specialist?")
